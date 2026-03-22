@@ -1,32 +1,11 @@
-# GlowUp Skincare — Product Data
-
-## How to Import
-1. Go to Shopify Admin → Products → Import
-2. Upload this CSV file
-3. Images need to be added manually (use Unsplash/Pexels links)
-
----
-
 Handle,Title,Body (HTML),Vendor,Type,Tags,Published,Variant SKU,Variant Price,Variant Compare At Price,Variant Inventory Qty,Image Src,Image Position
-
-## Product Data Below (paste into CSV)
-
 glow-cleanser,Gentle Glow Cleanser,"<p>Our bestselling daily cleanser that removes impurities without stripping natural moisture. Formulated with aloe vera and green tea extract.</p>",GlowUp,Cleansers,"bestseller,cleanser,daily",true,GLW-CLN-001,24.99,,100,,1
-
 vitamin-c-serum,Vitamin C Brightening Serum,"<p>A potent 15% Vitamin C serum that brightens skin, fades dark spots, and boosts collagen production. Results in as little as 2 weeks.</p>",GlowUp,Serums,"bestseller,serum,vitamin-c",true,GLW-SRM-002,39.99,49.99,80,,1
-
 hyaluronic-moisturizer,Hyaluronic Hydra Cream,"<p>Deeply hydrating moisturizer with triple-weight hyaluronic acid. Plumps fine lines and locks in moisture for 72 hours.</p>",GlowUp,Moisturizers,"moisturizer,hyaluronic,hydration",true,GLW-MST-003,34.99,,90,,1
-
-retinol-night-cream,Retinol Night Repair Cream,"<p>Gentle yet effective retinol cream for overnight skin renewal. Reduces fine lines, wrinkles, and uneven texture while you sleep.</p>",GlowUp,Night Creams,"retinol,night,anti-aging",true,GLW-NIT-004,44.99,54.99,60,,1
-
+retinol-night-cream,Retinol Night Repair Cream,"<p>Gentle yet effective retinol cream for overnight skin renewal. Reduces fine lines, wrinkles, and uneven texture while you sleep.</p>",GlowUp,"Night Creams","retinol,night,anti-aging",true,GLW-NIT-004,44.99,54.99,60,,1
 niacinamide-toner,Niacinamide Pore Refining Toner,"<p>Alcohol-free toner with 5% niacinamide to minimize pores, control oil, and smooth skin texture. Suitable for all skin types.</p>",GlowUp,Toners,"toner,niacinamide,pores",true,GLW-TNR-005,19.99,,110,,1
-
 spf-sunscreen,Invisible Shield SPF 50,"<p>Lightweight, non-greasy sunscreen with SPF 50 PA++++. No white cast, works under makeup. Reef-safe formula.</p>",GlowUp,Sunscreen,"spf,sunscreen,daily",true,GLW-SPF-006,29.99,,120,,1
-
-eye-cream,Peptide Eye Rescue Cream,"<p>Targeted eye cream with peptides and caffeine to reduce dark circles, puffiness, and fine lines around the delicate eye area.</p>",GlowUp,Eye Care,"eye-cream,peptides,caffeine",true,GLW-EYE-007,36.99,,70,,1
-
+eye-cream,Peptide Eye Rescue Cream,"<p>Targeted eye cream with peptides and caffeine to reduce dark circles, puffiness, and fine lines around the delicate eye area.</p>",GlowUp,"Eye Care","eye-cream,peptides,caffeine",true,GLW-EYE-007,36.99,,70,,1
 clay-mask,Detox Glow Clay Mask,"<p>Weekly purifying mask with kaolin clay and charcoal. Draws out impurities and leaves skin radiant. Use 1-2 times per week.</p>",GlowUp,Masks,"mask,clay,weekly",true,GLW-MSK-008,27.99,,85,,1
-
 vitamin-e-oil,Vitamin E Nourishing Oil,"<p>Multi-use face oil with Vitamin E and squalane. Can be used alone, mixed with moisturizer, or as a makeup primer.</p>",GlowUp,Oils,"oil,vitamin-e,multi-use",true,GLW-OIL-009,22.99,,95,,1
-
 sheet-mask-set,Hydrating Sheet Mask Set (5 Pack),"<p>Individually packed sheet masks infused with hyaluronic acid and aloe. Perfect for a quick glow boost before events.</p>",GlowUp,Masks,"mask,sheet-masks,set",true,GLW-SHT-010,15.99,19.99,150,,1
