@@ -1,0 +1,63 @@
+<div class="hero-custom" data-section-id="{{ section.id }}">
+  <div class="hero-bg" style="background-image: url({{ section.settings.bg_image | image_url: width: 1920 }});">
+    <div class="hero-overlay"></div>
+  </div>
+  <div class="hero-content">
+    <h1 class="hero-title">{{ section.settings.heading }}</h1>
+    <p class="hero-subtitle">{{ section.settings.subheading }}</p>
+    <a href="{{ section.settings.cta_link }}" class="hero-cta">{{ section.settings.cta_text }}</a>
+    {% if section.settings.show_countdown %}
+    <div class="hero-countdown" data-end="{{ section.settings.countdown_end }}">
+      <span class="countdown-days">00</span>d
+      <span class="countdown-hours">00</span>h
+      <span class="countdown-minutes">00</span>m
+      <span class="countdown-seconds">00</span>s
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+.hero-custom { position: relative; min-height: 80vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center; }
+.hero-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); }
+.hero-content { position: relative; text-align: center; color: #fff; padding: 2rem; max-width: 700px; }
+.hero-title { font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; }
+.hero-subtitle { font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.9; }
+.hero-cta { display: inline-block; padding: 1rem 2.5rem; background: #ff6b6b; color: #fff; text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 1.1rem; transition: transform 0.3s, background 0.3s; }
+.hero-cta:hover { transform: scale(1.05); background: #ff5252; }
+.hero-countdown { margin-top: 1.5rem; font-size: 1.5rem; font-weight: 600; }
+.hero-countdown span { color: #ff6b6b; }
+@media (max-width: 768px) { .hero-title { font-size: 2rem; } .hero-subtitle { font-size: 1rem; } .hero-cta { padding: 0.8rem 2rem; font-size: 1rem; } }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var cd = document.querySelector(".hero-countdown");
+    if (!cd) return;
+    var end = new Date(cd.dataset.end).getTime();
+    setInterval(function() {
+      var now = Date.now(), diff = Math.max(0, end - now);
+      cd.querySelector(".countdown-days").textContent = String(Math.floor(diff/864e5)).padStart(2,"0");
+      cd.querySelector(".countdown-hours").textContent = String(Math.floor((diff%864e5)/36e5)).padStart(2,"0");
+      cd.querySelector(".countdown-minutes").textContent = String(Math.floor((diff%36e5)/6e4)).padStart(2,"0");
+      cd.querySelector(".countdown-seconds").textContent = String(Math.floor((diff%6e4)/1e3)).padStart(2,"0");
+    }, 1000);
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Custom Hero",
+  "settings": [
+    { "type": "image_picker", "id": "bg_image", "label": "Background Image" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Glow Up Your Skin" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Premium skincare for radiant results" },
+    { "type": "text", "id": "cta_text", "label": "CTA Text", "default": "Shop Now" },
+    { "type": "url", "id": "cta_link", "label": "CTA Link" },
+    { "type": "checkbox", "id": "show_countdown", "label": "Show Countdown", "default": true },
+    { "type": "text", "id": "countdown_end", "label": "Countdown End Date", "default": "2026-04-30T23:59:59", "info": "YYYY-MM-DDTHH:MM:SS" }
+  ],
+  "presets": [{ "name": "Custom Hero" }]
+}
+{% endschema %}
