@@ -1,0 +1,120 @@
+<div class="testimonials-section" data-section-id="{{ section.id }}">
+  <div class="container">
+    {% if section.settings.heading != blank %}
+      <h2 class="section-title">{{ section.settings.heading }}</h2>
+    {% endif %}
+    <div class="testimonials-slider">
+      <div class="testimonials-track">
+        {% for block in section.blocks %}
+          <div class="testimonial-card" {{ block.shopify_attributes }}>
+            <div class="testimonial-stars">{% for i in (1..5) %}★{% endfor %}</div>
+            <p class="testimonial-text">"{{ block.settings.quote }}"</p>
+            <div class="testimonial-author">
+              {% if block.settings.avatar != blank %}
+                <img class="author-avatar" src="{{ block.settings.avatar | image_url: width: 80 }}" alt="{{ block.settings.name }}">
+              {% endif %}
+              <div class="author-info">
+                <span class="author-name">{{ block.settings.name }}</span>
+                <span class="author-title">{{ block.settings.title }}</span>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="slider-controls">
+        <button class="slider-btn slider-prev" aria-label="Previous">‹</button>
+        <div class="slider-dots"></div>
+        <button class="slider-btn slider-next" aria-label="Next">›</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.testimonials-section { padding: 5rem 0; background: #1a1a1a; color: #fff; overflow: hidden; }
+.testimonials-section .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+.testimonials-section .section-title { color: #fff; text-align: center; font-size: 2rem; margin-bottom: 3rem; }
+.testimonials-slider { position: relative; }
+.testimonials-track { display: flex; gap: 2rem; transition: transform 0.5s ease; }
+.testimonial-card { min-width: calc(33.333% - 1.34rem); background: #2a2a2a; border-radius: 16px; padding: 2rem; flex-shrink: 0; }
+.testimonial-stars { color: #ffc107; font-size: 1.2rem; margin-bottom: 1rem; }
+.testimonial-text { font-size: 1rem; line-height: 1.7; margin-bottom: 1.5rem; color: #ddd; font-style: italic; }
+.testimonial-author { display: flex; align-items: center; gap: 1rem; }
+.author-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+.author-name { display: block; font-weight: 600; color: #fff; }
+.author-title { display: block; font-size: 0.85rem; color: #999; }
+.slider-controls { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 2rem; }
+.slider-btn { width: 44px; height: 44px; border-radius: 50%; border: 2px solid #555; background: none; color: #fff; font-size: 1.5rem; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; }
+.slider-btn:hover { border-color: #ff6b6b; color: #ff6b6b; }
+.slider-dots { display: flex; gap: 8px; }
+.slider-dot { width: 10px; height: 10px; border-radius: 50%; background: #555; border: none; cursor: pointer; transition: background 0.3s; }
+.slider-dot.active { background: #ff6b6b; }
+@media (max-width: 1024px) { .testimonial-card { min-width: calc(50% - 1rem); } }
+@media (max-width: 600px) { .testimonial-card { min-width: 100%; } .testimonials-section .section-title { font-size: 1.5rem; } }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  var track = document.querySelector(".testimonials-track");
+  var cards = document.querySelectorAll(".testimonial-card");
+  var prev = document.querySelector(".slider-prev");
+  var next = document.querySelector(".slider-next");
+  var dotsContainer = document.querySelector(".slider-dots");
+  if (!track || cards.length === 0) return;
+  var current = 0, cardsPerView = 3;
+  function getCardsPerView() {
+    if (window.innerWidth <= 600) return 1;
+    if (window.innerWidth <= 1024) return 2;
+    return 3;
+  }
+  function update() {
+    cardsPerView = getCardsPerView();
+    var maxIndex = Math.max(0, cards.length - cardsPerView);
+    if (current > maxIndex) current = maxIndex;
+    var gap = 32, cardWidth = cards[0].offsetWidth + gap;
+    track.style.transform = "translateX(-" + (current * cardWidth) + "px)";
+    updateDots();
+  }
+  function createDots() {
+    dotsContainer.innerHTML = "";
+    var total = Math.max(1, cards.length - cardsPerView + 1);
+    for (var i = 0; i < total; i++) {
+      var dot = document.createElement("button");
+      dot.className = "slider-dot" + (i === current ? " active" : "");
+      dot.setAttribute("aria-label", "Go to slide " + (i + 1));
+      dot.dataset.index = i;
+      dot.addEventListener("click", function() { current = parseInt(this.dataset.index); update(); });
+      dotsContainer.appendChild(dot);
+    }
+  }
+  function updateDots() {
+    dotsContainer.querySelectorAll(".slider-dot").forEach(function(d, i) { d.classList.toggle("active", i === current); });
+  }
+  prev.addEventListener("click", function() { if (current > 0) { current--; update(); } });
+  next.addEventListener("click", function() { if (current < cards.length - cardsPerView) { current++; update(); } });
+  window.addEventListener("resize", function() { cardsPerView = getCardsPerView(); createDots(); update(); });
+  createDots(); update();
+});
+</script>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What Our Customers Say" }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        { "type": "text", "id": "quote", "label": "Quote", "default": "This product changed my skincare routine completely!" },
+        { "type": "text", "id": "name", "label": "Author Name", "default": "Sarah M." },
+        { "type": "text", "id": "title", "label": "Author Title", "default": "Verified Buyer" },
+        { "type": "image_picker", "id": "avatar", "label": "Avatar" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Testimonials" }]
+}
+{% endschema %}

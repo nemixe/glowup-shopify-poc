@@ -1,0 +1,103 @@
+<div class="product-tabs-section">
+  <div class="tabs-container">
+    <div class="tabs-nav">
+      <button class="tab-btn active" data-tab="description">Description</button>
+      <button class="tab-btn" data-tab="ingredients">Ingredients</button>
+      <button class="tab-btn" data-tab="shipping">Shipping & Returns</button>
+      <button class="tab-btn" data-tab="reviews">Reviews</button>
+    </div>
+    <div class="tabs-content">
+      <div class="tab-panel active" id="tab-description">
+        <div class="tab-description">
+          {{ product.description }}
+        </div>
+      </div>
+      <div class="tab-panel" id="tab-ingredients">
+        <div class="tab-ingredients">
+          <h4>Key Ingredients</h4>
+          <ul class="ingredients-list">
+            <li><strong>Hyaluronic Acid</strong> — Deep hydration, plumps fine lines</li>
+            <li><strong>Vitamin C</strong> — Brightens skin, evens tone</li>
+            <li><strong>Niacinamide</strong> — Minimizes pores, controls oil</li>
+            <li><strong>Retinol</strong> — Boosts cell turnover, reduces wrinkles</li>
+            <li><strong>Squalane</strong> — Lightweight moisture, restores barrier</li>
+          </ul>
+          <p class="ingredients-note">All ingredients are cruelty-free and dermatologically tested.</p>
+        </div>
+      </div>
+      <div class="tab-panel" id="tab-shipping">
+        <div class="tab-shipping">
+          <div class="shipping-info-item">
+            <h4>📦 Shipping</h4>
+            <ul>
+              <li>Free standard shipping on orders over $50</li>
+              <li>Standard shipping: 5-7 business days</li>
+              <li>Express shipping: 2-3 business days ($9.99)</li>
+              <li>International shipping: 10-15 business days</li>
+            </ul>
+          </div>
+          <div class="shipping-info-item">
+            <h4>↩️ Returns</h4>
+            <ul>
+              <li>30-day money-back guarantee</li>
+              <li>Items must be unused and in original packaging</li>
+              <li>Contact support@glowup-skincare.com for returns</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="tab-panel" id="tab-reviews">
+        <div class="tab-reviews" id="judgeme-reviews-widget">
+          <!-- Judge.me reviews widget renders here -->
+          <div id="jdgm-widget-reviews" data-product-id="{{ product.id }}">
+            <p class="reviews-placeholder">Customer reviews will appear here once the Judge.me app is connected.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.product-tabs-section { padding: 2rem 0; }
+.tabs-container { max-width: 900px; margin: 0 auto; }
+.tabs-nav { display: flex; gap: 0; border-bottom: 2px solid #eee; margin-bottom: 2rem; }
+.tab-btn { padding: 1rem 1.5rem; background: none; border: none; border-bottom: 3px solid transparent; margin-bottom: -2px; font-size: 0.95rem; font-weight: 600; color: #999; cursor: pointer; transition: all 0.3s; white-space: nowrap; }
+.tab-btn:hover { color: #333; }
+.tab-btn.active { color: #ff6b6b; border-bottom-color: #ff6b6b; }
+.tab-panel { display: none; animation: tabFade 0.3s ease; }
+.tab-panel.active { display: block; }
+@keyframes tabFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.tab-description { line-height: 1.8; color: #555; }
+.tab-description h1, .tab-description h2 { color: #1a1a1a; margin: 1rem 0 0.5rem; }
+.ingredients-list { list-style: none; padding: 0; margin: 1rem 0; }
+.ingredients-list li { padding: 0.75rem 0; border-bottom: 1px solid #f0f0f0; color: #555; }
+.ingredients-list li strong { color: #1a1a1a; }
+.ingredients-note { font-size: 0.9rem; color: #999; margin-top: 1rem; font-style: italic; }
+.shipping-info-item { margin-bottom: 1.5rem; }
+.shipping-info-item h4 { font-size: 1rem; margin-bottom: 0.5rem; }
+.shipping-info-item ul { list-style: none; padding: 0; }
+.shipping-info-item li { padding: 0.4rem 0; color: #555; font-size: 0.95rem; padding-left: 1.5rem; position: relative; }
+.shipping-info-item li::before { content: "•"; position: absolute; left: 0; color: #ff6b6b; font-weight: bold; }
+.reviews-placeholder { text-align: center; color: #999; padding: 2rem; }
+@media (max-width: 768px) {
+  .tabs-nav { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tab-btn { padding: 0.8rem 1rem; font-size: 0.85rem; }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  var btns = document.querySelectorAll(".tab-btn");
+  var panels = document.querySelectorAll(".tab-panel");
+  btns.forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      var tab = this.dataset.tab;
+      btns.forEach(function(b) { b.classList.remove("active"); });
+      panels.forEach(function(p) { p.classList.remove("active"); });
+      this.classList.add("active");
+      document.getElementById("tab-" + tab).classList.add("active");
+    });
+  });
+});
+</script>

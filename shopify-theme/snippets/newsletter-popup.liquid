@@ -1,0 +1,45 @@
+<div class="newsletter-popup" id="newsletterPopup" style="display:none;">
+  <div class="popup-overlay"></div>
+  <div class="popup-content">
+    <button class="popup-close" aria-label="Close">&times;</button>
+    <div class="popup-icon">✨</div>
+    <h3>Get 10% Off</h3>
+    <p>Subscribe to our newsletter for exclusive deals and skincare tips!</p>
+    {% form "customer" %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <input type="email" name="contact[email]" placeholder="Enter your email" class="popup-input" required>
+      <button type="submit" class="popup-submit">Get My 10% Off</button>
+    {% endform %}
+    <button class="popup-dismiss">No thanks, I will pay full price</button>
+  </div>
+</div>
+
+<style>
+.newsletter-popup { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; }
+.popup-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); }
+.popup-content { position: relative; background: #fff; border-radius: 20px; padding: 2.5rem; max-width: 420px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.2); animation: popupSlide 0.4s ease; }
+@keyframes popupSlide { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+.popup-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #999; }
+.popup-close:hover { color: #333; }
+.popup-icon { font-size: 3rem; margin-bottom: 1rem; }
+.popup-content h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+.popup-content p { color: #666; font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.5; }
+.popup-input { width: 100%; padding: 0.85rem 1rem; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1rem; margin-bottom: 1rem; box-sizing: border-box; transition: border-color 0.3s; }
+.popup-input:focus { outline: none; border-color: #ff6b6b; }
+.popup-submit { width: 100%; padding: 0.85rem; background: #ff6b6b; color: #fff; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.3s; }
+.popup-submit:hover { background: #ff5252; }
+.popup-dismiss { background: none; border: none; color: #999; font-size: 0.85rem; margin-top: 1rem; cursor: pointer; text-decoration: underline; }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  var popup = document.getElementById("newsletterPopup");
+  if (!popup) return;
+  var dismissed = localStorage.getItem("newsletter_dismissed");
+  if (!dismissed) { setTimeout(function() { popup.style.display = "flex"; }, 5000); }
+  popup.querySelector(".popup-close").addEventListener("click", function() { popup.style.display = "none"; });
+  popup.querySelector(".popup-dismiss").addEventListener("click", function() { popup.style.display = "none"; localStorage.setItem("newsletter_dismissed", "1"); });
+  popup.querySelector(".popup-overlay").addEventListener("click", function() { popup.style.display = "none"; });
+  popup.querySelector("form").addEventListener("submit", function() { localStorage.setItem("newsletter_dismissed", "1"); });
+});
+</script>

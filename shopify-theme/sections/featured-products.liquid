@@ -1,0 +1,107 @@
+<div class="featured-products" data-section-id="{{ section.id }}">
+  <div class="container">
+    {% if section.settings.heading != blank %}
+      <h2 class="section-title">{{ section.settings.heading }}</h2>
+    {% endif %}
+    {% if section.settings.subheading != blank %}
+      <p class="section-subtitle">{{ section.settings.subheading }}</p>
+    {% endif %}
+    <div class="product-grid">
+      {% for product in section.settings.collection.products limit: section.settings.products_count %}
+        <div class="product-card" data-product-id="{{ product.id }}">
+          <div class="product-image-wrap">
+            <a href="{{ product.url }}">
+              <img class="product-image" src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.featured_image.alt | escape }}" loading="lazy">
+              {% if product.images.size > 1 %}
+                <img class="product-image-hover" src="{{ product.images[1] | image_url: width: 400 }}" alt="{{ product.images[1].alt | escape }}" loading="lazy">
+              {% endif %}
+            </a>
+            {% if product.available == false %}
+              <span class="product-badge sold-out">Sold Out</span>
+            {% elsif product.compare_at_price > product.price %}
+              <span class="product-badge sale">-{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}%</span>
+            {% endif %}
+            <div class="product-actions">
+              <form method="post" action="/cart/add">
+                <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                <button type="submit" class="btn-add-to-cart" {% unless product.available %}disabled{% endunless %}>
+                  {% if product.available %}Add to Cart{% else %}Sold Out{% endif %}
+                </button>
+              </form>
+            </div>
+          </div>
+          <div class="product-info">
+            <h3 class="product-title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+            <div class="product-price">
+              {% if product.compare_at_price > product.price %}
+                <span class="price-sale">{{ product.price | money }}</span>
+                <span class="price-compare">{{ product.compare_at_price | money }}</span>
+              {% else %}
+                <span class="price-regular">{{ product.price | money }}</span>
+              {% endif %}
+            </div>
+            <div class="product-rating">
+              <span class="star-count" data-product-id="{{ product.id }}">★</span>
+              <span class="review-count">({{ product.metafields.reviews.rating_count | default: 0 }})</span>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    {% if section.settings.show_view_all %}
+      <a href="{{ section.settings.collection.url }}" class="btn-view-all">{{ section.settings.view_all_text }}</a>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+.featured-products { padding: 4rem 0; background: #fafafa; }
+.featured-products .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+.section-title { text-align: center; font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; color: #1a1a1a; }
+.section-subtitle { text-align: center; color: #666; margin-bottom: 2.5rem; font-size: 1.05rem; }
+.product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2rem; }
+.product-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); transition: transform 0.3s, box-shadow 0.3s; }
+.product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+.product-image-wrap { position: relative; overflow: hidden; aspect-ratio: 1; }
+.product-image { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.4s; }
+.product-image-hover { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s; }
+.product-card:hover .product-image { opacity: 0; }
+.product-card:hover .product-image-hover { opacity: 1; }
+.product-badge { position: absolute; top: 12px; left: 12px; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+.product-badge.sale { background: #ff4757; color: #fff; }
+.product-badge.sold-out { background: #333; color: #fff; }
+.product-actions { position: absolute; bottom: 0; left: 0; right: 0; padding: 1rem; transform: translateY(100%); transition: transform 0.3s; background: linear-gradient(transparent, rgba(0,0,0,0.6)); }
+.product-card:hover .product-actions { transform: translateY(0); }
+.btn-add-to-cart { width: 100%; padding: 0.7rem; background: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; color: #1a1a1a; transition: background 0.2s; }
+.btn-add-to-cart:hover { background: #ff6b6b; color: #fff; }
+.btn-add-to-cart:disabled { background: #ccc; cursor: not-allowed; }
+.product-info { padding: 1rem 1.2rem 1.5rem; }
+.product-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
+.product-title a { color: #1a1a1a; text-decoration: none; }
+.product-title a:hover { color: #ff6b6b; }
+.price-regular { font-weight: 700; color: #1a1a1a; }
+.price-sale { font-weight: 700; color: #ff4757; margin-right: 0.5rem; }
+.price-compare { color: #999; text-decoration: line-through; font-size: 0.9rem; }
+.product-rating { font-size: 0.85rem; color: #ffc107; margin-top: 0.3rem; }
+.review-count { color: #999; margin-left: 0.3rem; }
+.btn-view-all { display: block; text-align: center; margin: 2.5rem auto 0; padding: 0.8rem 2.5rem; border: 2px solid #1a1a1a; color: #1a1a1a; text-decoration: none; border-radius: 50px; font-weight: 600; transition: all 0.3s; }
+.btn-view-all:hover { background: #1a1a1a; color: #fff; }
+@media (max-width: 768px) { .product-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; } .section-title { font-size: 1.5rem; } }
+@media (max-width: 480px) { .product-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; } .product-info { padding: 0.75rem; } .product-title { font-size: 0.85rem; } }
+</style>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Bestsellers" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Our most loved products" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "products_count", "min": 2, "max": 12, "step": 1, "label": "Products to show", "default": 8 },
+    { "type": "checkbox", "id": "show_view_all", "label": "Show View All button", "default": true },
+    { "type": "text", "id": "view_all_text", "label": "View All text", "default": "View All Products" }
+  ],
+  "presets": [{ "name": "Featured Products" }]
+}
+{% endschema %}
